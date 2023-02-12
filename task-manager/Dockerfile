@@ -11,4 +11,4 @@ WORKDIR /home/app
 
 RUN npm install
 
-CMD ["node", "App.js"]
+CMD ["node", "app.js"]
