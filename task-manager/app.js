@@ -1,14 +1,15 @@
 const express  = require('express');
-const app = express();
 const tasks = require('./routes/tasks');
+const MongoClient = require('mongodb').MongoClient;
 
+const app = express();
 
 app.use(express.json())
 
 
 
 app.get('/hello', () => {
-    res.end("hello world");
+        res.send('Task Manager App')
 })
 
 app.use('/api/v1/tasks', tasks)
