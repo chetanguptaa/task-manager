@@ -8,7 +8,7 @@ app.use(express.json())
 
 
 
-app.get('/hello', () => {
+app.get('/', () => {
         res.send('Task Manager App')
 })
 
