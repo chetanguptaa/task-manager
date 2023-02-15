@@ -2,7 +2,14 @@ const express = require('express');
 const app =  express();
 
 const port = 3000;
-app.use(express.static('public'))
+
+const myLogger = (req, res,next) => {
+        console.log("LOGGED");
+        next();
+}
+
+// app.use(express.static('public'))
+app.use(myLogger)
 
 app.get('/', (req, res) => {
         res.send("hello world")
