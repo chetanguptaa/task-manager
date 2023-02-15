@@ -7,12 +7,21 @@ const myLogger = (req, res,next) => {
         console.log("LOGGED");
         next();
 }
+const requestTime = (req, res,next) => {
+        req.requestTime = Date.now();
+        res.end();
+}
+
 
 // app.use(express.static('public'))
-app.use(myLogger)
+app.use(myLogger);
+app.use(requestTime);
+
 
 app.get('/', (req, res) => {
-        res.send("hello world")
+        let responseText = 'Hello World!<br>';
+        responseText = `<small>Requested at: ${req.requestTime}</small>`;
+        res.send(responseText)
 })
 app.post('/',(req, res) => {
         res.send('Got a POST request')
