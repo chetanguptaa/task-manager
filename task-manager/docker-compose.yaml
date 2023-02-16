@@ -4,3 +4,11 @@ services:
     image: task-manager:1.0
     ports:
     - 3000:3000
+  mongodb:
+    image: mongo
+    ports:  
+    - 27017:27017
+  mongo-express:
+    image: mongo-express
+    ports: 
+    - 8081:8081

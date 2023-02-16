@@ -13,7 +13,7 @@ const requestTime = (req, res,next) => {
 }
 
 
-// app.use(express.static('public'))
+app.use(express.static('public'))
 app.use(myLogger);
 app.use(requestTime);
 
