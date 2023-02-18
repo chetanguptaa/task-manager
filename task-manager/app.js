@@ -20,7 +20,7 @@ const port = 3000;
 
 const start = async () => {
         try {
-                await connectDB('mongodb://admin:password@localhost:27017');
+                await connectDB('mongodb://admin:password@mongodb:27017');
                 app.listen(port, () => {
                         console.log(`server is listening on port ${port}...`)
                 });
