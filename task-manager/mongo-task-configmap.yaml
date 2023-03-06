@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config
+data:
+  mongo-url: mongo-service
+  mongo-uri: mongodb://mongouser:mongopassword@mongo-service:27017
