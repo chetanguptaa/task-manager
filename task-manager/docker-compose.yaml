@@ -29,7 +29,7 @@ services:
       - mongo-network
 
   task-manager:
-    image: task-manager:1.0
+    image: chetanguptaa/task-manager:1.0
     restart: always
     ports:
       - 3000:3000
