@@ -16,30 +16,37 @@
 #                     sudo npm start
 #                   EOF
 # }
-
-resource "kubernetes_manifest" "example" {
-  manifest_path = "../task-manager-deploy.yaml"
-}
-
-resource "kubernetes_deployment" "example" {
-  metadata {
-    name = "${resource.kubernetes_manifest.example.metadata[0].name}"
-  }
-  spec {
-    replicas = "${resource.kubernetes_manifest.example.spec[0].replicas}"
-    selector {
-      match_labels = "${resource.kubernetes_manifest.example.spec[0].selector.match_labels}"
-    }
-    template {
-      metadata {
-        labels = "${resource.kubernetes_manifest.example.spec[0].template.metadata.labels}"
-      }
-      spec {
-        container {
-          image = "${resource.kubernetes_manifest.example.spec[0].template.spec[0].container[0].image}"
-          name  = "${resource.kubernetes_manifest.example.spec[0].template.spec[0].container[0].name}"
-        }
-      }
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "3.0.1"
     }
   }
 }
+
+
+# Pulls the image
+resource "docker_image" "task-manager" {
+  name = "chetanguptaa/task-manager:1.0"
+}
+resource "docker_image" "mongo" {
+  name = "mongo"
+}
+resource "docker_image" "mongo-express" {
+  name = "mongo-express"
+}
+
+resource "docker_network" "private_network" {
+  name = "mongo-network"
+}
+# Create a container
+resource "docker_container" "mongo" {
+  image = docker_image.mongo.image_id
+  name  = "mongo"
+}
+resource "docker_container" "mongo-express" {
+  image = docker_image.mongo-express.image_id
+  name  = "mongo-express"
+}
+
