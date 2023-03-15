@@ -6,4 +6,7 @@ terraform.tfstate*
 *.tfstate.backup
 *.tfvars
 
-\terraform\.terraform.lock.hcl
+
+
+task-manager/terraform/.terraform.lock.hcl
+task-manager/terraform/ssh-config.tpl
