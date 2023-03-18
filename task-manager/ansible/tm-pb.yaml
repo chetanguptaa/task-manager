@@ -1,0 +1,25 @@
+- hosts: ec2
+  become: yes
+  tasks:
+    - name: Install Node.js
+      yum:
+        name: nodejs
+        state: present
+
+    - name: Create app directory
+      file:
+        path: /opt/app
+        state: directory
+
+    - name: Copy app files
+      copy:
+        src: app.js
+        dest: /opt/app/
+
+    - name: Start app service
+      systemd:
+        name: app
+        daemon_reload: yes
+        enabled: yes
+        state: started
+        exec_start: "/usr/bin/node /opt/app/app.js"
