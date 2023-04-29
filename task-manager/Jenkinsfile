@@ -1,0 +1,48 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'your-credentials-id', url: 'your-git-repository-url']]])
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'docker build -t your-docker-image-name .'
+      }
+    }
+
+    stage('Publish') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'your-credentials-id', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          sh "docker login -u ${env.DOCKERHUB_USERNAME} -p ${env.DOCKERHUB_PASSWORD}"
+        }
+
+        sh 'docker push your-docker-image-name'
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'your-credentials-id', passwordVariable: 'KUBECONFIG_PASSWORD', usernameVariable: 'KUBECONFIG_USERNAME')]) {
+          sh "echo ${env.KUBECONFIG} | base64 --decode > kubeconfig.yaml"
+          sh 'kubectl config use-context your-kubernetes-context-name'
+          sh 'kubectl set image deployment/your-deployment-name your-container-name=your-docker-image-name'
+        }
+      }
+    }
+
+    stage('Cleanup') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'your-credentials-id', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          sh "docker login -u ${env.DOCKERHUB_USERNAME} -p ${env.DOCKERHUB_PASSWORD}"
+        }
+
+        sh 'docker rmi your-docker-image-name'
+        sh 'docker logout'
+      }
+    }
+  }
+}
