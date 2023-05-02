@@ -30,6 +30,7 @@ pipeline {
                 sh 'kubectl create secret generic ${K8S_SECRET_NAME} --from-file=secret.yml'
             }
         }
+        
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''

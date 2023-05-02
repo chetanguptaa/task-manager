@@ -1,4 +1,3 @@
 task-manager/terraform/ssh-config.tpl
 
-task-manager/Jenkinsfile
-task-manager/Jenkinsfile
+task-manager\Jenkinsfile
