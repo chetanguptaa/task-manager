@@ -21,7 +21,7 @@ const createTask = async (req, res, next) => {
 
 const getTask = async (req, res, next) => {
   try {
-    const { id: taskID} = req.params;
+    const { id: taskID } = req.params;
     const task = await Task.findOne({_id: taskID});
     if (!task) {
       return next(createCustomError(`no task with id: ${taskID}`, 404))
