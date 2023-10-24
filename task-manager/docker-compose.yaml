@@ -1,7 +1,6 @@
-version: '3'
+version: "3"
 
 services:
-
   mongodb:
     image: mongo
     restart: always
@@ -45,6 +44,6 @@ networks:
   mongo-network:
     driver: bridge
 
-volumes: 
+volumes:
   mongodb-data:
     driver: local
